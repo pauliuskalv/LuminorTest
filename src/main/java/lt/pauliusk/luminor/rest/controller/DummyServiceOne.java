@@ -13,7 +13,7 @@ import java.util.Random;
 @RestController
 @RequestMapping("/dummyserviceone/notify")
 public class DummyServiceOne {
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<PaymentDTO> notify(@RequestBody PaymentDTO payment) {
         Random random = new Random(Calendar.getInstance().getTimeInMillis());
 

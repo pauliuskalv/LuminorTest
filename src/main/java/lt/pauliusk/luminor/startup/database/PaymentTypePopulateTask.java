@@ -16,7 +16,7 @@ public class PaymentTypePopulateTask implements DatabasePopulateTask {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         PaymentType paymentTypeOne = new PaymentType();
         paymentTypeOne.setName("Type one");
         paymentTypeOne.setCode(PaymentTypeConst.TYPE_ONE.getCode());

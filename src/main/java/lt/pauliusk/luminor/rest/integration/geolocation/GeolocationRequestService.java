@@ -32,7 +32,7 @@ public class GeolocationRequestService {
     }
 
     public String getCountry(String recordedIp) throws Exception {
-        if (providers.size() == 0) {
+        if (providers.isEmpty()) {
             throw new Exception("No providers for geolocation!");
         }
 

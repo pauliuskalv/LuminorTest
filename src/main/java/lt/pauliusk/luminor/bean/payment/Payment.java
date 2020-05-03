@@ -1,8 +1,9 @@
 package lt.pauliusk.luminor.bean.payment;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lt.pauliusk.luminor.bean.DatabaseEntity;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
@@ -11,8 +12,10 @@ import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
 @Entity(name = "payment")
-@Data
 public class Payment extends DatabaseEntity {
     @Column(name = "amount", nullable = false)
     @Positive(message = "Payment amount must be positive!")

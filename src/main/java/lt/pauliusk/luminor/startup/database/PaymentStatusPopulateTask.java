@@ -16,7 +16,7 @@ public class PaymentStatusPopulateTask implements DatabasePopulateTask {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         PaymentStatus paymentStatusNew = new PaymentStatus();
         paymentStatusNew.setName("New payment");
         paymentStatusNew.setCode(PaymentStatusConst.NEW.getCode());

@@ -1,15 +1,18 @@
 package lt.pauliusk.luminor.bean;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode(of = { "id" })
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @MappedSuperclass
 public class DatabaseEntity {
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 

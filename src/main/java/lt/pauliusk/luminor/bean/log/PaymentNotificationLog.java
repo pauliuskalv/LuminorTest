@@ -1,6 +1,8 @@
 package lt.pauliusk.luminor.bean.log;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lt.pauliusk.luminor.bean.DatabaseEntity;
 import lt.pauliusk.luminor.bean.payment.Payment;
 
@@ -10,7 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.ZonedDateTime;
 
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
 @Entity(name = "payment_notification_log")
 public class PaymentNotificationLog extends DatabaseEntity {
     @Column(name = "url")

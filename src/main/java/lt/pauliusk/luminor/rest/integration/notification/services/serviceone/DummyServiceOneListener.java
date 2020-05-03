@@ -11,7 +11,7 @@ import java.util.Map;
 @Service
 public class DummyServiceOneListener implements PaymentNotificationListener {
     private static final String URL = "http://localhost:8080";
-    private static final String METHOD_TEMPLATE = "/dummyserviceone/notify/";
+    private static final String METHOD_TEMPLATE = "/dummyserviceone/notify";
     private final RequestBuilder requestBuilder;
 
     public DummyServiceOneListener(@Autowired RequestBuilder requestBuilder) {

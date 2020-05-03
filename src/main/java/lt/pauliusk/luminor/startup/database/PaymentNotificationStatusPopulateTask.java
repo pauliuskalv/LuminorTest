@@ -16,7 +16,7 @@ public class PaymentNotificationStatusPopulateTask implements DatabasePopulateTa
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         PaymentNotificationStatus statusSuccess = new PaymentNotificationStatus();
         statusSuccess.setCode(PaymentNotificationStatusConst.SUCCESS.getCode());
 

@@ -19,7 +19,7 @@ public class CurrencyPopulateTask implements DatabasePopulateTask {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() {
         Currency currencyUsd = new Currency();
         currencyUsd.setCode("USD");
         currencyUsd.setName("United States Dollar");

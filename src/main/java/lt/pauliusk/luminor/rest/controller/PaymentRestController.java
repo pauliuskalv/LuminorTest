@@ -55,7 +55,7 @@ public class PaymentRestController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<PaymentDTO> createPayment(@RequestBody PaymentDTO payment, ServerHttpRequest request) {
         try {
             doGeolocationRequest("createPayment()", request);

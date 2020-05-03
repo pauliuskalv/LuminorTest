@@ -14,6 +14,10 @@ public class PaymentValidator implements Validator<Payment> {
             return false;
         }
 
+        if (bean.getCurrency() == null) {
+            return false;
+        }
+
         if (bean.getAmount().compareTo(BigDecimal.ZERO) < 0) {
             return false;
         }

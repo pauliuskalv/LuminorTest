@@ -17,7 +17,7 @@ public class TypeThreeCancellationFee implements CancellationFee {
         int paymentHour = payment.getCreateDate().getHour();
         int currHour = ZonedDateTime.now().getHour();
 
-        int hourDiff = Math.abs(paymentHour - currHour) + 1;
+        int hourDiff = Math.abs(paymentHour - currHour);
 
         return new BigDecimal(hourDiff).multiply(coefficient);
     }
