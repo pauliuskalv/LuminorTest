@@ -1,5 +1,6 @@
 package lt.pauliusk.luminor.domain.payment.validator;
 
+import lt.pauliusk.luminor.bean.payment.Currency;
 import lt.pauliusk.luminor.bean.payment.Payment;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 class PaymentValidatorTest {
@@ -45,6 +47,7 @@ class PaymentValidatorTest {
         payment.setAmount(new BigDecimal("100.00"));
         payment.setCreditorIban("");
         payment.setDebtorIban("");
+        payment.setCurrency(mock(Currency.class));
 
         assertTrue(validator.isValid(payment));
     }

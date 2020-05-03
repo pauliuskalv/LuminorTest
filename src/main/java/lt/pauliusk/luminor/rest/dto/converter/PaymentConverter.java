@@ -39,7 +39,11 @@ public class PaymentConverter implements BeanConverter<Payment, PaymentDTO> {
         Payment bean = new Payment();
 
         bean.setId(dto.getId());
-        bean.setCurrency(currencyConverter.convertDTOToBean(dto.getCurrency()));
+
+        if (dto.getCurrency() != null) {
+            bean.setCurrency(currencyConverter.convertDTOToBean(dto.getCurrency()));
+        }
+
         bean.setDebtorIban(dto.getDebtorIban());
         bean.setCreditorIban(dto.getCreditorIban());
         bean.setDetails(dto.getDetails());
