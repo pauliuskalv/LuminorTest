@@ -1,12 +1,20 @@
 package lt.pauliusk.luminor.rest.dto.converter;
 
 import lt.pauliusk.luminor.bean.payment.PaymentStatus;
+import lt.pauliusk.luminor.dao.payment.PaymentStatusDAO;
 import lt.pauliusk.luminor.rest.dto.BeanConverter;
 import lt.pauliusk.luminor.rest.dto.bean.PaymentStatusDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PaymentStatusConverter implements BeanConverter<PaymentStatus, PaymentStatusDTO> {
+    private final PaymentStatusDAO paymentStatusDAO;
+
+    public PaymentStatusConverter(@Autowired PaymentStatusDAO paymentStatusDAO) {
+        this.paymentStatusDAO = paymentStatusDAO;
+    }
+
     @Override
     public PaymentStatusDTO convertBeanToDTO(PaymentStatus bean) {
         PaymentStatusDTO dto = new PaymentStatusDTO();
@@ -20,12 +28,6 @@ public class PaymentStatusConverter implements BeanConverter<PaymentStatus, Paym
 
     @Override
     public PaymentStatus convertDTOToBean(PaymentStatusDTO dto) {
-        PaymentStatus paymentStatus = new PaymentStatus();
-
-        paymentStatus.setId(dto.getId());
-        paymentStatus.setName(dto.getName());
-        paymentStatus.setCode(dto.getCode());
-
-        return paymentStatus;
+        return paymentStatusDAO.findPaymentStatusByCode(dto.getCode()).orElseThrow();
     }
 }

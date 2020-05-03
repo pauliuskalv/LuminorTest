@@ -6,6 +6,7 @@ import lt.pauliusk.luminor.domain.payment.fee.CancellationFee;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.ZonedDateTime;
 
 @Service
@@ -14,10 +15,7 @@ public class TypeOneCancellationFee implements CancellationFee {
 
     @Override
     public BigDecimal calculate(Payment payment) {
-        int paymentHour = payment.getCreateDate().getHour();
-        int currHour = ZonedDateTime.now().getHour();
-
-        int hourDiff = Math.abs(paymentHour - currHour);
+        long hourDiff = Duration.between(payment.getCreateDate(), ZonedDateTime.now()).toHours();
 
         return new BigDecimal(hourDiff).multiply(coefficient);
     }

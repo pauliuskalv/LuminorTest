@@ -2,6 +2,8 @@ package lt.pauliusk.luminor.rest.controller;
 
 import lt.pauliusk.luminor.domain.payment.PaymentService;
 import lt.pauliusk.luminor.rest.dto.bean.PaymentDTO;
+import lt.pauliusk.luminor.rest.dto.bean.PaymentWithIdCancellationDTO;
+import lt.pauliusk.luminor.rest.dto.bean.PaymentWithIdDTO;
 import lt.pauliusk.luminor.rest.integration.geolocation.GeolocationRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,7 @@ public class PaymentRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PaymentDTO> getPayment(@PathVariable("id") Long id, ServerHttpRequest request) {
+    public ResponseEntity<PaymentWithIdCancellationDTO> getPayment(@PathVariable("id") Long id, ServerHttpRequest request) {
         try {
             doGeolocationRequest("getPayment()", request);
 
@@ -44,7 +46,7 @@ public class PaymentRestController {
     }
 
     @GetMapping("/all/uncancelled")
-    public ResponseEntity<List<PaymentDTO>> getUncancelledPayments(@RequestParam(name = "amount", required = false) BigDecimal amount, ServerHttpRequest request) {
+    public ResponseEntity<List<PaymentWithIdDTO>> getUncancelledPayments(@RequestParam(name = "amount", required = false) BigDecimal amount, ServerHttpRequest request) {
         try {
             doGeolocationRequest("getUncancelledPayments()", request);
 

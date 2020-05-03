@@ -2,12 +2,15 @@ package lt.pauliusk.luminor.domain.payment;
 
 import lt.pauliusk.luminor.bean.payment.Payment;
 import lt.pauliusk.luminor.bean.payment.constant.PaymentStatusConst;
+import lt.pauliusk.luminor.bean.payment.constant.PaymentTypeConst;
 import lt.pauliusk.luminor.dao.payment.PaymentDAO;
 import lt.pauliusk.luminor.domain.Validator;
 import lt.pauliusk.luminor.domain.payment.status.PaymentStatusService;
 import lt.pauliusk.luminor.domain.payment.type.PaymentTypeService;
 import lt.pauliusk.luminor.rest.dto.BeanConverter;
 import lt.pauliusk.luminor.rest.dto.bean.PaymentDTO;
+import lt.pauliusk.luminor.rest.dto.bean.PaymentWithIdCancellationDTO;
+import lt.pauliusk.luminor.rest.dto.bean.PaymentWithIdDTO;
 import lt.pauliusk.luminor.rest.integration.notification.PaymentNotifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,27 +26,36 @@ public class PaymentService {
     private final PaymentDAO paymentDAO;
     private final PaymentTypeService paymentTypeService;
     private final PaymentStatusService paymentStatusService;
-    private final BeanConverter<Payment, PaymentDTO> paymentConverter;
     private final PaymentNotifyService paymentNotifyService;
     private final PaymentCancellationService paymentCancellationService;
     private final Validator<Payment> paymentValidator;
+
+    private final BeanConverter<Payment, PaymentDTO> paymentConverter;
+    private final BeanConverter<Payment, PaymentWithIdDTO> paymentWithIdConverter;
+    private final BeanConverter<Payment, PaymentWithIdCancellationDTO> paymentWithIdCancellationConverter;
 
     public PaymentService(
             @Autowired PaymentDAO paymentDAO,
             @Autowired PaymentTypeService paymentTypeService,
             @Autowired PaymentStatusService paymentStatusService,
-            @Autowired BeanConverter<Payment, PaymentDTO> paymentConverter,
             @Autowired PaymentNotifyService paymentNotifyService,
             @Autowired PaymentCancellationService paymentCancellationService,
-            @Autowired Validator<Payment> paymentValidator
+            @Autowired Validator<Payment> paymentValidator,
+
+            @Autowired BeanConverter<Payment, PaymentDTO> paymentConverter,
+            @Autowired BeanConverter<Payment, PaymentWithIdDTO> paymentWithIdConverter,
+            @Autowired BeanConverter<Payment, PaymentWithIdCancellationDTO> paymentWithIdCancellationConverter
     ) {
         this.paymentDAO = paymentDAO;
         this.paymentTypeService = paymentTypeService;
         this.paymentStatusService = paymentStatusService;
-        this.paymentConverter = paymentConverter;
         this.paymentNotifyService = paymentNotifyService;
         this.paymentCancellationService = paymentCancellationService;
         this.paymentValidator = paymentValidator;
+
+        this.paymentConverter = paymentConverter;
+        this.paymentWithIdConverter = paymentWithIdConverter;
+        this.paymentWithIdCancellationConverter = paymentWithIdCancellationConverter;
     }
 
     @Transactional
@@ -60,28 +72,27 @@ public class PaymentService {
 
         bean = paymentDAO.save(bean);
 
-        paymentNotifyService.notifyAsync(bean);
+        if (bean.getPaymentType().getCode().equals(PaymentTypeConst.TYPE_ONE.getCode())
+                || bean.getPaymentType().getCode().equals(PaymentTypeConst.TYPE_TWO.getCode())) {
+            paymentNotifyService.notifyAsync(bean);
+        }
 
         return paymentConverter.convertBeanToDTO(bean);
     }
 
     @Transactional
-    public PaymentDTO findPaymentById(Long id) throws Exception {
+    public PaymentWithIdCancellationDTO findPaymentById(Long id) throws Exception {
         Payment payment = paymentDAO.findById(id).orElseThrow(() -> new Exception("No such payment with id " + id));
 
-        return paymentConverter.convertBeanToDTO(payment);
+        return paymentWithIdCancellationConverter.convertBeanToDTO(payment);
     }
 
     @Transactional
-    public List<PaymentDTO> findUncancelledPayments(BigDecimal amount) {
+    public List<PaymentWithIdDTO> findUncancelledPayments(BigDecimal amount) {
         List<Payment> payments = paymentDAO.findUncancelledPayments(amount);
 
-        List<PaymentDTO> paymentDTOs = new LinkedList<>();
-        payments.forEach(payment -> {
-            PaymentDTO dto = paymentConverter.convertBeanToDTO(payment);
-            dto.setCancellationFee(null);
-            paymentDTOs.add(dto);
-        });
+        List<PaymentWithIdDTO> paymentDTOs = new LinkedList<>();
+        payments.forEach(payment -> paymentDTOs.add(paymentWithIdConverter.convertBeanToDTO(payment)));
 
         return paymentDTOs;
     }

@@ -31,6 +31,13 @@ public class PaymentConverter implements BeanConverter<Payment, PaymentDTO> {
         }
         dto.setCancellationFee(cancellationFee);
 
+        dto.setCurrency(currencyConverter.convertBeanToDTO(bean.getCurrency()));
+        dto.setAmount(bean.getAmount());
+        dto.setDetails(bean.getDetails());
+        dto.setCreditorIban(bean.getCreditorIban());
+        dto.setDebtorIban(bean.getDebtorIban());
+        dto.setBic(bean.getBic());
+
         return dto;
     }
 
