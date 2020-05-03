@@ -1,14 +1,14 @@
 package lt.pauliusk.luminor.rest.dto.bean;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lt.pauliusk.luminor.rest.dto.BaseDTO;
 
 import java.math.BigDecimal;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class PaymentDTO extends BaseDTO {
     private BigDecimal amount;
